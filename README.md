@@ -1,100 +1,97 @@
-# h.UBA — Prototipo web responsive 2026
+# h.UBA · Aplicación web responsive
 
-**Patricia Retamozo** · **Introducción al Conocimiento Proyectual 2**
+**Prototipo académico de Patricia Retamozo** para la materia **Introducción al Conocimiento Proyectual 2**.
 
-h.UBA es una aplicación web académica independiente para acompañar a estudiantes de la Universidad de Buenos Aires. **No es una aplicación oficial de la UBA**. Funciona desde un navegador moderno en celulares Android, iPhone, tablets y computadoras, y puede publicarse gratis con GitHub Pages. **No requiere APK ni Android Studio**.
+La aplicación reúne accesos universitarios, materiales académicos, herramientas para organizar materias, calendarios, recordatorios y un asistente de respuestas predefinidas. Es un **prototipo independiente y no oficial de la Universidad de Buenos Aires**.
 
-## Novedad de la versión 0.3 — Alejandría
+## Versión 0.6 · Nuevo diseño
 
-En **Buscador → Alejandría** se quitaron los enlaces anteriores y se incorporaron **ocho bibliotecas y repositorios digitales**. Los enlaces abren en pestañas externas; no se incluye un buscador interno de esos sitios.
+- Inicio renovado con identidad h.UBA, robot ilustrado y accesos rápidos.
+- Interfaz adaptable a celulares, tabletas y pantallas de escritorio.
+- Navegación móvil inferior con cinco accesos: Inicio, Buscador, Calendario, Recordatorios y Más.
+- Tarjetas, formularios, calendario, buscador, asistente, Mis cosas y configuración con estilo visual unificado.
+- Mejoras de foco, zonas táctiles y adaptación de contenidos a pantallas pequeñas.
+- Conserva las funciones y los materiales académicos de la versión 0.4.
 
-1. Open Library — https://openlibrary.org/?lang=es
-2. Redalyc — https://www.redalyc.org/
-3. Biblioteca FADU · UBA — https://biblioteca.fadu.uba.ar/tiki/tiki-read_article.php?articleId=894
-4. Biblioteca Digital Mundial — https://www.loc.gov/collections/world-digital-library/about-this-collection/
-5. Project Gutenberg — https://www.gutenberg.org/
-6. Biblioteca Virtual Miguel de Cervantes — https://www.cervantesvirtual.com/
-7. Europeana — https://www.europeana.eu/es
-8. Internet Archive — https://archive.org/
+## Estructura
 
-**Códice / Parciales y PDF por materia no se modificaron.** El asistente ahora indica que Alejandría cuenta con estos recursos.
+```
+.github/workflows/pages.yml   Publicación del sitio y QR
+scripts/build_qr.py           Generador del QR
+web/index.html                Entrada de la aplicación
+web/app.js                    Navegación, contenidos y funcionalidad
+web/styles.css                Estilos base
+web/styles-v6.css             Rediseño de la interfaz
+web/sw.js                     Servicio de caché
+web/manifest.webmanifest      Configuración de PWA
+web/assets/                  Robot e íconos
+web/materiales/               Ocho PDF académicos
+tests/smoke.cjs               Pruebas automatizadas
+docs/                         Referencias y estructura de contenidos
+```
 
-## Contenidos de versiones anteriores conservados
+**No es necesario compilar ni generar un APK.** El sitio funciona desde cualquier navegador web moderno, con diseño adaptativo para Android, iOS y escritorio.
 
-- Imagen del robot aportada para el prototipo e identidad visual adaptable a móviles.
-- Pantalla **Acerca de** con la autoría de Patricia Retamozo.
-- Accesos a SIU Guaraní, campus UBA XXI y CBC, trámites y sedes, y orientación vocacional.
-- Carreras de FADU y enlaces a sus planes de estudio.
-- Ocho documentos PDF asociados a ICP1, ICP2, IPC e ICSE en `web/materiales/`.
-- Ejemplos de parciales en Altillo, en la pestaña **Códice / Parciales**.
-- Calendario académico UBA XXI 2026 y los eventos de cursada comunicados para noviembre 2026.
-- Plan personal de estudio, notas y recordatorios, guardados en el almacenamiento local del navegador.
-- Aplicación web instalable (PWA) con caché sin conexión para archivos propios; los recursos externos requieren internet.
+## Publicación en tu repositorio
 
-## Probar en Windows con Visual Studio Code
+Repositorio: https://github.com/MebisA/h.UBA
 
-1. Descomprimí el ZIP y abrí la carpeta `huba-android-mvp` en VS Code (**File → Open Folder**).
-2. Abrí **Terminal → New Terminal** desde esa carpeta.
-3. Ejecutá:
+1. Descomprimí el ZIP. Los directorios `web`, `scripts`, `tests`, `.github` y `docs` tienen que quedar directamente en la raíz del repositorio.
+2. Abrí esa carpeta en Visual Studio Code.
+3. Actualizá la rama `main` con los archivos del paquete.
+4. En GitHub, abrí **Settings → Pages** y dejá seleccionado **Source: GitHub Actions**.
+5. En **Actions**, comprobá que el flujo **Publicar PWA y generar QR** finalice correctamente.
 
-   ```powershell
-   py -m http.server 8080 --directory web
-   ```
+Si tenés el repositorio clonado y ya reemplazaste los archivos, ejecutá:
 
-4. Abrí **http://localhost:8080**.
-5. Para emular el tamaño de pantalla de un celular, presioná `F12` y luego `Ctrl + Shift + M` en Chrome o Edge.
-6. Entrá a **Buscador → Alejandría**. Si ya probaste una versión anterior, refrescá con `Ctrl + Shift + R`; las PWA instaladas pueden necesitar cerrarse y abrirse para aplicar la actualización.
+```powershell
+git add .
+git commit -m "Actualización de interfaz h.UBA v0.6"
+git push origin main
+```
 
-Como alternativa, podés usar la extensión **Live Server** con `web/index.html`.
+La aplicación se publica en:
 
-## Comprobaciones
+- Sitio web: https://mebisa.github.io/h.UBA/
+- QR: https://mebisa.github.io/h.UBA/qr.png
 
-Si tenés Node.js instalado, ejecutá desde la raíz:
+El QR se genera durante el despliegue y apunta a la dirección pública, sin parámetros de seguimiento.
+
+**Nota:** si tu repositorio ya contiene otro workflow creado manualmente para publicar Pages, mantené solo uno de publicación para evitar despliegues simultáneos. El que incluye este paquete publica el contenido de `web/` en la raíz del sitio.
+
+## Ejecución local en Windows
+
+Desde la raíz del proyecto, en la terminal de VS Code:
+
+```powershell
+py -m http.server 8080 --directory web
+```
+
+Abrí http://localhost:8080 y, para simular un teléfono, utilizá Chrome o Edge con `F12` y `Ctrl + Shift + M`.
+
+Si la web se muestra con el diseño anterior, refrescá con `Ctrl + Shift + R` y, si la habías instalado, cerrá y reabrí la aplicación para permitir la actualización del Service Worker.
+
+## Pruebas
+
+Requieren Node.js; no se necesitan paquetes de NPM:
 
 ```powershell
 node --check web/app.js
 node tests/smoke.cjs
 ```
 
-Las pruebas incluyen la presencia y cantidad exacta de enlaces de Alejandría, las pantallas principales, las fechas y los ocho documentos PDF.
+El proyecto conserva:
 
-## Publicar gratis en GitHub Pages y generar el QR
+- Las fechas de evaluación de noviembre de 2026 y el calendario académico UBA XXI 2026.
+- Los recursos de Alejandría y Códice.
+- Los ocho PDF asociados a ICP1, ICP2, IPC e ICSE.
+- Los enlaces oficiales de UBA, CBC, UBA XXI y FADU.
+- Los formularios de materias, notas, calendario y recordatorios, con persistencia en LocalStorage.
+- Configuración de modo oscuro, alto contraste y tamaño de letra.
+- El enlace de Compartir sin parámetros de seguimiento.
 
-1. Creá un repositorio **público** en tu cuenta GitHub, por ejemplo `huba-android-mvp`.
-2. Desde la raíz del proyecto en VS Code, ejecutá (reemplazá `TU_USUARIO`):
+## Alcance
 
-   ```powershell
-   git init
-   git branch -M main
-   git add .
-   git commit -m "Actualización de Alejandría en h.UBA"
-   git remote add origin https://github.com/TU_USUARIO/huba-android-mvp.git
-   git push -u origin main
-   ```
+La información personal se guarda en cada navegador; no se sincroniza entre equipos ni se envía a un servidor propio. La app no permite iniciar sesión en servicios institucionales, no envía notificaciones con el navegador cerrado ni ofrece un asistente conectado a modelos externos. Los servicios universitarios y las bibliotecas externas requieren conexión a Internet.
 
-   **Si el repositorio ya existe y está configurado**, solo usá `git add .`, `git commit -m "Actualización de Alejandría"` y `git push`. No vuelvas a hacer `git init` ni `git remote add origin`.
-
-3. En GitHub: **Settings → Pages → Build and deployment → Source → GitHub Actions**.
-4. El workflow `Publicar PWA y generar QR` publica **únicamente `web/`** en GitHub Pages y genera `qr.png` con la dirección pública real.
-5. Abrí `https://TU_USUARIO.github.io/huba-android-mvp/` o usá el QR en `https://TU_USUARIO.github.io/huba-android-mvp/qr.png` una vez finalizado el despliegue.
-
-El hosting gratuito requiere que el repositorio sea público. Revisá los derechos de distribución de los documentos PDF antes de publicarlos; los PDF adjuntos se incluyen en la web pública. El proyecto no solicita credenciales universitarias y no sincroniza datos entre equipos.
-
-## Estructura
-
-```text
-huba-android-mvp/
-├── web/
-│   ├── index.html
-│   ├── styles.css
-│   ├── app.js
-│   ├── sw.js
-│   ├── manifest.webmanifest
-│   ├── assets/
-│   └── materiales/              8 documentos PDF
-├── .github/workflows/pages.yml  Despliegue GitHub Pages
-├── scripts/build_qr.py         Generador del código QR
-├── tests/smoke.cjs             Pruebas automatizadas
-├── docs/                       Referencias del proyecto
-└── README.md
-```
+Antes de publicar una distribución pública, verificá que contás con autorización para redistribuir los PDF incluidos.
