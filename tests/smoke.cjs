@@ -101,6 +101,9 @@ expectText('Campus Virtual UBA XXI');expectText('SIU Guaraní');
 const index=fs.readFileSync(path.join(WEB,'index.html'),'utf8');
 assert.ok(index.includes('Patricia Retamozo'));
 assert.ok(index.includes('assets/icon-192.png'));
+assert.ok(index.includes('styles-v6.css'), 'Debe cargar el diseño responsive v0.6');
+assert.ok(elements.app.innerHTML.includes('mobile-nav'), 'Debe existir navegación móvil');
+assert.ok(elements.app.innerHTML.includes('h.UBA'), 'Debe conservar la identidad visual');
 const sw=fs.readFileSync(path.join(WEB,'sw.js'),'utf8');
 for(const match of sw.matchAll(/'\.\/([^']+)'/g)){
   if(!match[1] || match[1]==='./')continue;
