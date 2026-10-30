@@ -189,7 +189,18 @@ button:active { transform:scale(.985); }
 .dark .resource p,.dark .university-desc,.dark .section-description{color:#c4d4e8;}
 .dark .resource-alejandria,.dark .resource-codice,.dark .resource-materiales{background:#233c50;}
 .dark .resource-emblem{background:#376b79;}
-.dark .hero h1,.dark .hero p,.dark .hero .section-tag,.dark .personal-hero h2,.dark .personal-hero p{color:#0b2856;}
+.dark .hero{background:linear-gradient(120deg,#1b2741 8%,#24304f 45%,#1c4b57 100%);border-color:#37506b;box-shadow:0 16px 40px rgba(0,0,0,.22);} 
+.dark .hero:before{background:#58b8b84d;} 
+.dark .hero h1,.dark .hero p,.dark .hero .section-tag{color:#eef5ff;} 
+.dark .hero p{color:#d7e4f6;} 
+.dark .hero .section-tag{color:#86e4df;} 
+.dark .hero-cta{background:#dce9ff;color:#0c2456;box-shadow:0 10px 22px rgba(0,0,0,.24);} 
+.dark .hero-cta:hover{background:#f1f6ff;} 
+.dark .hero-campus{border-color:#86d9e6;opacity:.20;background:repeating-linear-gradient(90deg,transparent 0 22px,#78cade 22px 34px,transparent 34px 53px);} 
+.dark .hero-campus span{color:#7fd3e0;} 
+.dark .personal-hero{background:linear-gradient(120deg,#1e2c47,#1f5960);} 
+.dark .personal-hero h2,.dark .personal-hero p{color:#eef5ff;} 
+.dark .personal-hero p{color:#d7e4f6;}
 .dark .mini-calendar .day{color:var(--ink);}
 .dark .mini-calendar .today{background:#15568a;}
 .dark .chat-msg:not(.user){background:#29415d;color:#eaf3ff;}
