@@ -15,7 +15,7 @@ const elements = {
 };
 const location = {
   hostname:'localhost', protocol:'http:', hash:'#inicio',
-  href:'http://localhost:8080/#inicio'
+  href:'http://localhost:8080/?utm_source=referral#inicio'
 };
 const doc = {
   getElementById:id=>elements[id]||(elements[id]={innerHTML:''}),
@@ -25,16 +25,17 @@ const doc = {
 const context = {
   document:doc, location, navigator:{}, crypto:{randomUUID:()=>String(Date.now())},
   window:{addEventListener(){},scrollTo(){}},
-  history:{pushState:(_data,_title,hash)=>{location.hash=hash;location.href='http://localhost:8080/'+hash;}},
+  history:{pushState:(_data,_title,hash)=>{location.hash=hash;location.href='http://localhost:8080/'+hash;},replaceState:(_data,_title,url)=>{location.href=new URL(url,location.href).href;location.hash=new URL(location.href).hash;}},
   localStorage:{getItem:key=>store[key]??null,setItem:(key,val)=>{store[key]=val}},
   Intl, Date, URL, setTimeout, clearTimeout, requestAnimationFrame:f=>f(), console,
   confirm:()=>true
 };
 vm.runInNewContext(appSource,context,{filename:'web/app.js'});
+assert.equal(location.href,'http://localhost:8080/#inicio','La URL inicial debe limpiar los parámetros de seguimiento');
 const expectText=what=>assert.ok(elements.app.innerHTML.includes(what),`Falta: ${what}`);
 const click=(data)=>{
   const target={dataset:data,closest:()=>target};
-  handlers.click.at(-1)({target,preventDefault(){}});
+  return handlers.click.at(-1)({target,preventDefault(){}});
 };
 const go=where=>click({go:where});
 
@@ -106,4 +107,19 @@ for(const match of sw.matchAll(/'\.\/([^']+)'/g)){
   const p=path.join(WEB,match[1]);
   assert.ok(fs.existsSync(p),`Falta recurso cacheado: ${match[1]}`);
 }
-console.log('Pruebas de rutas, fechas, PDFs y recursos: OK');
+// El enlace compartido debe omitir parámetros de seguimiento, también al copiarlo.
+(async () => {
+  let copied = '';
+  context.navigator.clipboard = { writeText: async value => { copied = value; } };
+  location.href = 'https://mebisa.github.io/h.UBA/?utm_source=referral#compartir';
+  location.hash = '#compartir';
+  await click({go:'compartir'});
+  expectText('value=\"https://mebisa.github.io/h.UBA/\"');
+  assert.ok(!elements.app.innerHTML.includes('utm_source'), 'Se mostró un parámetro de seguimiento');
+  await click({action:'copy-link'});
+  assert.equal(copied, 'https://mebisa.github.io/h.UBA/');
+  location.href = 'https://mebisa.github.io/h.UBA/index.html?utm_campaign=referral#compartir';
+  await click({go:'compartir'});
+  expectText('value=\"https://mebisa.github.io/h.UBA/\"');
+  console.log('Pruebas de rutas, fechas, PDFs, recursos y enlace compartido: OK');
+})().catch(err => { console.error(err); process.exitCode = 1; });
